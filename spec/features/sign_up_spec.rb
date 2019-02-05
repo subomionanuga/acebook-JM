@@ -19,7 +19,8 @@ end
 describe "Authentication" do
   scenario "User must sign up/in to access posts" do
     go_homepage
-    expect(page).to have_content('Sign in', 'Sign up')
+    expect(page).to have_content('Sign in')
+    expect(page).to have_content('Sign up')
     visit '/posts'
     expect(page).to have_content('You need to sign in or sign up before continuing.')
   end
@@ -49,6 +50,6 @@ describe "User" do
     visit '/users/2'
     expect(page).to have_content("you are viewing test@test.com's page")
   end
-  
+
 
 end
