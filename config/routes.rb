@@ -7,7 +7,9 @@ Rails.application.routes.draw do
 
   get 'signup', to: 'pages#signup'
 
+  get ''
 
   resources :posts
+
 
 end
