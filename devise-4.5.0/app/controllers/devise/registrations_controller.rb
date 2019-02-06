@@ -84,7 +84,7 @@ class Devise::RegistrationsController < DeviseController
   end
 
   def show
-    @user =!params[:id].nil? ? User.find(params[:id]) : current_user
+    @user = !params[:id].nil? ? User.find(params[:id]) : current_user
   end
 
   protected

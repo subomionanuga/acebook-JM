@@ -1,1 +1,9 @@
-<!-- <h1>FUCKERSSSS!</h1> -->
+<p><% @users.each do |user| %>
+  <p><%= user.email %></p>
+  <p><%= user.id %></p>
+  <% end %>
+  <%= params[:id] %>
+  <h1> you are viewing <%= @users.find(params[:id]).email %>'s page</h1>
+  <br>
+
+</p>

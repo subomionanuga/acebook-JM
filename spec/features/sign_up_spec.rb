@@ -41,13 +41,13 @@ describe "User" do
   scenario "can visit other users pages" do
     go_homepage
     sign_up
-    click_link "Sign out"
+    click_on "Sign out"
     click_link "Sign up"
     fill_in "user[email]", with: "second@test.com"
     fill_in "user[password]", with: "secondpassword"
-    fill_in "user[password_confirmation]", with: "testpassword"
+    fill_in "user[password_confirmation]", with: "secondpassword"
     click_button 'Sign up'
-    visit '/users/1'
+    visit '/user/1'
     expect(page).to have_content("you are viewing test@test.com's page")
   end
 

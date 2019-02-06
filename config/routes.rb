@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   get 'signup', to: 'pages#signup'
 
-  get ':id' => 'pages#show'
+  get 'user/:id' => 'pages#show'
 
   resources :posts, :users
 
