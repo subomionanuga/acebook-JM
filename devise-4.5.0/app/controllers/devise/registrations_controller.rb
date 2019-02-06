@@ -52,7 +52,9 @@ class Devise::RegistrationsController < DeviseController
     if resource_updated
       if is_flashing_format?
         flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
+
         :update_needs_confirmation : :updated
+
         set_flash_message :notice, flash_key
       end
       bypass_sign_in resource, scope: resource_name
@@ -84,7 +86,11 @@ class Devise::RegistrationsController < DeviseController
   end
 
   def show
+
     @user = !params[:id].nil? ? User.find(params[:id]) : current_user
+    
+   # @user = User.find(params[:user_id])
+
   end
 
   protected
