@@ -5,7 +5,7 @@ end
 
 def sign_up
   click_link "Sign up"
-  fill_in "user[email]", with: "test@test.com"
+  fill_in "user[email]", with: "best@test.com"
   fill_in "user[password]", with: "testpassword"
   fill_in "user[password_confirmation]", with: "testpassword"
   click_button 'Sign up'
@@ -33,6 +33,11 @@ def sign_up_short_password
   fill_in "user[password]", with: "passw"
   fill_in "user[password_confirmation]", with: "passw"
   click_button 'Sign up'
+end
+
+
+def help_pp
+  pp page.body
 end
 
 def create_post

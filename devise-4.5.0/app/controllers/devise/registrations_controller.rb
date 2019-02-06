@@ -52,7 +52,9 @@ class Devise::RegistrationsController < DeviseController
     if resource_updated
       if is_flashing_format?
         flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
-          :update_needs_confirmation : :updated
+
+        :update_needs_confirmation : :updated
+
         set_flash_message :notice, flash_key
       end
       bypass_sign_in resource, scope: resource_name
@@ -84,15 +86,19 @@ class Devise::RegistrationsController < DeviseController
   end
 
   def show
-    @user = User.find(params[:user_id])
+
+    @user = !params[:id].nil? ? User.find(params[:id]) : current_user
+    
+   # @user = User.find(params[:user_id])
+
   end
 
   protected
 
   def update_needs_confirmation?(resource, previous)
     resource.respond_to?(:pending_reconfirmation?) &&
-      resource.pending_reconfirmation? &&
-      previous != resource.unconfirmed_email
+    resource.pending_reconfirmation? &&
+    previous != resource.unconfirmed_email
   end
 
   # By default we want to require a password checks on update.
