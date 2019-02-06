@@ -13,7 +13,7 @@ feature "Timeline", type: :feature do
     go_homepage
     sign_up
     create_post
-    expect(page).to have_content("created by 3")
+    expect(page).to have_content("created by test@test.com - user 3")
   end
 
 end
