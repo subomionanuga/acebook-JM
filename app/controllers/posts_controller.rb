@@ -26,11 +26,12 @@ class PostsController < ApplicationController
   end
 
   def update
-    if @post.update(post_params)
+    if current_user.id == @post.user_id
+      @post.update(post_params)
       redirect_to @post, notice: "update successful"
     # else
-    #   render 'edit'
-    end
+    #   redirect_to posts_path, notice: 'You cannot edit that post, you snake!'
+    # end
   end
 
   def destroy
