@@ -3,8 +3,10 @@
   <div>
   <p> <%= post.message %> - created by <%= post.user.email %> - user <%= post.user_id%> </p>
   
+  <% if current_user.id == post.user_id %>
   <%= link_to "Edit Post", edit_post_path(post) %>
   <%= link_to "Delete Post", post, method: :delete, data: {confirm: "Are you sure?"} %>
+  <% end %>
   </div>
 <% end %>
 

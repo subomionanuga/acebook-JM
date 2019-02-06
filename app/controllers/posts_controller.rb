@@ -34,8 +34,13 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post.destroy
-    redirect_to posts_path
+    @posts = Post.all
+    if current_user.id == @post.user_id
+      @post.destroy
+      redirect_to posts_path
+    else
+      render 'index', notice: "You cannot delete this post"
+    end
   end
 
   def show
