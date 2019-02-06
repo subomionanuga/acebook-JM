@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  
+
   devise_for :users
   root 'pages#index'
 
@@ -7,9 +7,8 @@ Rails.application.routes.draw do
 
   get 'signup', to: 'pages#signup'
 
-  get ''
+  get ':id' => 'pages#show'
 
-  resources :posts
-
+  resources :posts, :users
 
 end
