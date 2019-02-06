@@ -13,7 +13,31 @@ feature "Timeline", type: :feature do
     go_homepage
     sign_up
     create_post
-    expect(page).to have_content("created by 3")
+    expect(page).to have_content("created by test@test.com - user 3")
   end
 
+  scenario "User can't delete another user's post" do
+    go_homepage
+    sign_up
+    create_post
+    click_link "Sign out"
+    sign_up2
+    click_link "posts"
+    expect(page).to have_no_content("Delete Posts")
+  end
+
+  scenario "User can't edit another user's posts" do
+    go_homepage
+    sign_up
+    create_post
+    click_link "Sign out"
+    sign_up2
+    click_link "posts"
+    visit '/posts/4/edit'
+    fill_in "Message", with: "Trying to steal someone else's post!"
+    click_button "Submit"
+    # visit('/posts')
+    expect(page).to have_content("You cannot edit that post, you snake!")
+    expect(page).to have_no_content("Trying to steal someone else's post!")
+  end
 end

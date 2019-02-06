@@ -4,6 +4,10 @@ class PostsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :find_post, only: [:edit, :show, :update, :destroy]
+  before_action :all_posts, only: [:index, :destroy]
+
+  def index
+  end
 
   def new
     @post = Post.new
@@ -13,29 +17,28 @@ class PostsController < ApplicationController
     @post = current_user.posts.build(post_params)
     if @post.save
     redirect_to @post, notice: "Yessss, it was posted!"
-    else
-    render "new"
+    # else
+    # render "new"
     end
-  end
-
-  def index
-    @posts = Post.all
   end
 
   def edit
   end
 
   def update
-    if @post.update(post_params)
+    if current_user.id == @post.user_id
+      @post.update(post_params)
       redirect_to @post, notice: "update successful"
     else
-      render 'edit'
+      redirect_to posts_path, notice: 'You cannot edit that post, you snake!'
     end
   end
 
   def destroy
-    @post.destroy
-    redirect_to posts_path
+    if current_user.id == @post.user_id
+      @post.destroy
+      redirect_to posts_path
+    end
   end
 
   def show
@@ -46,6 +49,10 @@ class PostsController < ApplicationController
 
   def post_params
     params.require(:post).permit(:message)
+  end
+
+  def all_posts
+    @posts = Post.all
   end
 
   def find_post
