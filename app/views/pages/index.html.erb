@@ -1,3 +1,11 @@
 <h1>Pages#index</h1>
 <p> Welcome RAILS BISHES </p>
 <%= link_to "posts", posts_path %>
+
+<p><% @users.each do |user| %>
+  <p><%= user.email %></p>
+  <p><%= user.id %></p>
+  <% end %>  
+  <br>
+
+</p>
