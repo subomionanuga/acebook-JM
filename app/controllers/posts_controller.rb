@@ -29,8 +29,8 @@ class PostsController < ApplicationController
     if current_user.id == @post.user_id
       @post.update(post_params)
       redirect_to @post, notice: "update successful"
-    # else
-    #   redirect_to posts_path, notice: 'You cannot edit that post, you snake!'
+    else
+      redirect_to posts_path, notice: 'You cannot edit that post, you snake!'
     end
   end
 
