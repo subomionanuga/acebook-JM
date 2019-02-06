@@ -35,4 +35,22 @@ describe "Authentication" do
     expect(page).to have_content("1 error prohibited this user from being saved: Password is too short (minimum is 6 characters)")
     end
 
+end
+
+describe "User" do
+  scenario "can visit other users pages" do
+    go_homepage
+    sign_up
+    click_on "Sign out"
+    click_link "Sign up"
+    fill_in "user[email]", with: "second@test.com"
+    fill_in "user[password]", with: "secondpassword"
+    fill_in "user[password_confirmation]", with: "secondpassword"
+    click_button 'Sign up'  
+    save_and_open_page
+    visit '/user/2'
+    expect(page).to have_content("you are viewing test@test.com's page")
   end
+
+
+end

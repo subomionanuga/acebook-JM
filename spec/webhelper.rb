@@ -35,6 +35,11 @@ def sign_up_short_password
   click_button 'Sign up'
 end
 
+
+def help_pp
+  pp page.body
+end
+
 def create_post
   visit "/posts"
   click_link "New post"
