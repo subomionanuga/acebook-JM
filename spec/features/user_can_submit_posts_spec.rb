@@ -26,4 +26,19 @@ feature "Timeline", type: :feature do
     expect(page).to have_no_content("Delete Posts")
   end
 
+  scenario "User can't edit another user's posts" do
+    go_homepage
+    sign_up
+    create_post
+    click_link "Sign out"
+    sign_up2
+    click_link "posts"
+    visit '/posts/4/edit'
+    fill_in "Message", with: "Trying to steal someone else's post!"
+    click_button "Submit"
+    save_and_open_page
+    # visit('/posts')
+    expect(page).to have_content("You cannot edit that post, you snake!")
+    expect(page).to have_no_content("Trying to steal someone else's post!")
+  end
 end

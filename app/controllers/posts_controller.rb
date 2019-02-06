@@ -31,7 +31,7 @@ class PostsController < ApplicationController
       redirect_to @post, notice: "update successful"
     # else
     #   redirect_to posts_path, notice: 'You cannot edit that post, you snake!'
-    # end
+    end
   end
 
   def destroy
