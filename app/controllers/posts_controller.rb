@@ -17,8 +17,8 @@ class PostsController < ApplicationController
     @post = current_user.posts.build(post_params)
     if @post.save
     redirect_to @post, notice: "Yessss, it was posted!"
-    else
-    render "new"
+    # else
+    # render "new"
     end
   end
 
@@ -28,8 +28,8 @@ class PostsController < ApplicationController
   def update
     if @post.update(post_params)
       redirect_to @post, notice: "update successful"
-    else
-      render 'edit'
+    # else
+    #   render 'edit'
     end
   end
 
@@ -37,8 +37,6 @@ class PostsController < ApplicationController
     if current_user.id == @post.user_id
       @post.destroy
       redirect_to posts_path
-    else
-      render 'index', notice: "You cannot delete this post"
     end
   end
 

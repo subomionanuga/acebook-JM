@@ -16,15 +16,14 @@ feature "Timeline", type: :feature do
     expect(page).to have_content("created by test@test.com - user 3")
   end
 
-  scenario "User can't delete another user's post" do 
+  scenario "User can't delete another user's post" do
     go_homepage
     sign_up
     create_post
     click_link "Sign out"
     sign_up2
     click_link "posts"
-    click_link "Delete Post"
-    expect(page).to have_content("Hello, world!")
+    expect(page).to have_no_content("Delete Posts")
   end
 
 end
