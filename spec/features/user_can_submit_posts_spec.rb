@@ -36,7 +36,6 @@ feature "Timeline", type: :feature do
     visit '/posts/4/edit'
     fill_in "Message", with: "Trying to steal someone else's post!"
     click_button "Submit"
-    save_and_open_page
     # visit('/posts')
     expect(page).to have_content("You cannot edit that post, you snake!")
     expect(page).to have_no_content("Trying to steal someone else's post!")
