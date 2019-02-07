@@ -11,4 +11,8 @@ Rails.application.routes.draw do
   get 'user/:id' => 'pages#show'
 
   resources :posts, :users
+  
+  resources :posts do
+    resources :comments
+  end
 end
