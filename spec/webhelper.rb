@@ -49,6 +49,6 @@ end
 def create_post_new_line
   visit "/posts"
   click_link "New post"
-  fill_in "Message", with: "Goodbye Universe"
+  fill_in "Message", with: "Goodbye \n Universe"
   click_button "Submit"
 end

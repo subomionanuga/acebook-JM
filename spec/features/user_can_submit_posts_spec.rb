@@ -45,8 +45,8 @@ feature "Timeline", type: :feature do
     go_homepage
     sign_up
     create_post_new_line
-    save_and_open_page
+    # save_and_open_page
     pp page.text
-    expect(page.text).to have_content("Goodbye\n Universe")#.to_be(true)
+    expect(page.html).to have_content("Goodbye \n Universe")#.to_be(true)
   end
 end

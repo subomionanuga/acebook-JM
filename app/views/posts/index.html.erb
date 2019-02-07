@@ -1,7 +1,7 @@
 <%= link_to "New post", new_post_path %>
 <% @posts.each do |post| %>
   <div>
-  <p> <%= post.message %> - created by <%= post.user.email %> - user <%= post.user_id%> </p>
+  <p> <%= simple_format(post.message) %> - created by <%= post.user.email %> - user <%= post.user_id%> </p>
   <%=post.id%>
   <% if current_user.id == post.user_id %>
   <%= link_to "Edit Post", edit_post_path(post) %>
