@@ -3,7 +3,6 @@
 require 'test_helper'
 
 class ConfirmationInstructionsTest < ActionMailer::TestCase
-
   def setup
     setup_mailer
     Devise.mailer = 'Devise::Mailer'
@@ -88,9 +87,9 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
     host, port = ActionMailer::Base.default_url_options.values_at :host, :port
 
     if mail.body.encoded =~ %r{<a href=\"http://#{host}:#{port}/users/confirmation\?confirmation_token=([^"]+)">}
-      assert_equal $1, user.confirmation_token
+      assert_equal Regexp.last_match(1), user.confirmation_token
     else
-      flunk "expected confirmation url regex to match"
+      flunk 'expected confirmation url regex to match'
     end
   end
 
@@ -101,16 +100,14 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
   end
 
   test 'renders a scoped if scoped_views is set in the mailer class' do
-    begin
-      Devise::Mailer.scoped_views = true
-      assert_equal user.email, mail.body.decoded
-    ensure
-      Devise::Mailer.send :remove_instance_variable, :@scoped_views
-    end
+    Devise::Mailer.scoped_views = true
+    assert_equal user.email, mail.body.decoded
+  ensure
+    Devise::Mailer.send :remove_instance_variable, :@scoped_views
   end
 
   test 'mailer sender accepts a proc' do
-    swap Devise, mailer_sender: proc { "another@example.com" } do
+    swap Devise, mailer_sender: proc { 'another@example.com' } do
       assert_equal ['another@example.com'], mail.from
     end
   end

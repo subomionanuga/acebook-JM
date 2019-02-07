@@ -80,7 +80,7 @@ class DatabaseAuthenticationTest < Devise::IntegrationTest
         sign_in_as_user do
           fill_in 'email', with: 'wrongemail@test.com'
         end
-        
+
         assert_not_contain 'Not found in database'
         assert_contain 'Invalid Email or password.'
       end
@@ -88,7 +88,7 @@ class DatabaseAuthenticationTest < Devise::IntegrationTest
   end
 
   test 'error message is configurable by resource name' do
-    store_translations :en, devise: { failure: { admin: { invalid: "Invalid credentials" } } } do
+    store_translations :en, devise: { failure: { admin: { invalid: 'Invalid credentials' } } } do
       sign_in_as_admin do
         fill_in 'password', with: 'abcdef'
       end

@@ -17,7 +17,7 @@ class ParameterSanitizerTest < ActiveSupport::TestCase
   end
 
   test 'permits empty params when received not a hash' do
-    sanitizer = sanitizer({ 'user' => 'string' })
+    sanitizer = sanitizer('user' => 'string')
     sanitized = sanitizer.sanitize(:sign_in)
 
     assert_equal({}, sanitized)
@@ -38,7 +38,7 @@ class ParameterSanitizerTest < ActiveSupport::TestCase
   end
 
   test 'permits empty params when received nil instead of hash' do
-    sanitizer = sanitizer({ 'user' => nil })
+    sanitizer = sanitizer('user' => nil)
     sanitized = sanitizer.sanitize(:sign_in)
 
     assert_equal({}, sanitized)
@@ -79,7 +79,7 @@ class ParameterSanitizerTest < ActiveSupport::TestCase
 
   test 'permit parameters for new actions' do
     sanitizer = sanitizer('user' => { 'email' => 'jose@omglol', 'name' => 'Jose' })
-    sanitizer.permit(:invite_user, keys: [:email, :name])
+    sanitizer.permit(:invite_user, keys: %i[email name])
 
     sanitized = sanitizer.sanitize(:invite_user)
 

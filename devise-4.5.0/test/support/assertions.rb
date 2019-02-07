@@ -25,6 +25,6 @@ class ActiveSupport::TestCase
   def assert_raise_with_message(exception_klass, message, &block)
     exception = assert_raise exception_klass, &block
     assert_equal exception.message, message,
-      "The expected message was #{message} but your exception throwed #{exception.message}"
+                 "The expected message was #{message} but your exception throwed #{exception.message}"
   end
 end

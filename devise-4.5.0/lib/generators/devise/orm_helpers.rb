@@ -10,7 +10,7 @@ module Devise
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-CONTENT
+        CONTENT
         buffer
       end
 
@@ -28,12 +28,12 @@ CONTENT
         if Rails.version >= '5.0.3'
           db_migrate_path
         else
-          @migration_path ||= File.join("db", "migrate")
+          @migration_path ||= File.join('db', 'migrate')
         end
       end
 
       def model_path
-        @model_path ||= File.join("app", "models", "#{file_path}.rb")
+        @model_path ||= File.join('app', 'models', "#{file_path}.rb")
       end
     end
   end

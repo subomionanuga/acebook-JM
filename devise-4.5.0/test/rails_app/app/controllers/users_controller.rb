@@ -2,11 +2,11 @@
 
 class UsersController < ApplicationController
   prepend_before_action :current_user, only: :exhibit
-  before_action :authenticate_user!, except: [:accept, :exhibit]
+  before_action :authenticate_user!, except: %i[accept exhibit]
   respond_to :html, :xml
 
   def index
-    user_session[:cart] = "Cart"
+    user_session[:cart] = 'Cart'
     respond_with(current_user)
   end
 
@@ -23,7 +23,7 @@ class UsersController < ApplicationController
   end
 
   def exhibit
-    render (Devise::Test.rails5? ? :body : :text) => current_user ? "User is authenticated" : "User is not authenticated"
+    render (Devise::Test.rails5? ? :body : :text) => current_user ? 'User is authenticated' : 'User is not authenticated'
   end
 
   def expire

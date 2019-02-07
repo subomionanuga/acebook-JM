@@ -3,7 +3,7 @@
 require 'test_helper'
 
 class MyMountableEngine
-  def self.call(env)
+  def self.call(_env)
     ['200', { 'Content-Type' => 'text/html' }, ['Rendered content of MyMountableEngine']]
   end
 end
