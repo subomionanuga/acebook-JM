@@ -6,6 +6,5 @@
 <h3>Users</h3>
 <% @users.each do |user|%>
 <a href="/user/<%=user.id%>"><%=user.email%></a><br>
+<%= user.id %>
 <% end %>
-
-

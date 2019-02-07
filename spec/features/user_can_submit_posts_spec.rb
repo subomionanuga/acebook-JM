@@ -39,7 +39,8 @@ feature 'Users action on posts ', type: :feature do
     click_link 'Sign out'
     sign_up2
     click_link 'Posts'
-    visit '/posts/7/edit'
+    save_and_open_page
+    visit '/posts/5/edit'
     fill_in 'Message', with: "Trying to steal someone else's post!"
     click_button 'Submit'
     expect(page).to have_content('You cannot edit that post, you snake!')
@@ -50,8 +51,6 @@ feature 'Users action on posts ', type: :feature do
     go_homepage
     sign_up
     create_post_new_line
-    # save_and_open_page
-    pp page.text
     expect(page.html).to have_content("Goodbye \n Universe")#.to_be(true)
   end
 end
