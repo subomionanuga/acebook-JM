@@ -28,7 +28,7 @@ feature 'Users action on posts ', type: :feature do
     create_post
     click_link 'Sign out'
     sign_up2
-    click_link 'posts'
+    click_link 'Posts'
     expect(page).to have_no_content('Delete Posts')
   end
 
@@ -38,7 +38,7 @@ feature 'Users action on posts ', type: :feature do
     create_post
     click_link 'Sign out'
     sign_up2
-    click_link 'posts'
+    click_link 'Posts'
     visit '/posts/7/edit'
     fill_in 'Message', with: "Trying to steal someone else's post!"
     click_button 'Submit'
