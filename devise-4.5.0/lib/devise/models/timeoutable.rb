@@ -22,7 +22,7 @@ module Devise
     module Timeoutable
       extend ActiveSupport::Concern
 
-      def self.required_fields(klass)
+      def self.required_fields(_klass)
         []
       end
 

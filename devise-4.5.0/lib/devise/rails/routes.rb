@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "active_support/core_ext/object/try"
-require "active_support/core_ext/hash/slice"
+require 'active_support/core_ext/object/try'
+require 'active_support/core_ext/hash/slice'
 
 module Devise
   module RouteSet
@@ -9,11 +9,11 @@ module Devise
       result = super
       @devise_finalized ||= begin
         if Devise.router_name.nil? && defined?(@devise_finalized) && self != Rails.application.try(:routes)
-          warn "[DEVISE] We have detected that you are using devise_for inside engine routes. " \
-            "In this case, you probably want to set Devise.router_name = MOUNT_POINT, where "   \
-            "MOUNT_POINT is a symbol representing where this engine will be mounted at. For "   \
-            "now Devise will default the mount point to :main_app. You can explicitly set it"   \
-            " to :main_app as well in case you want to keep the current behavior."
+          warn '[DEVISE] We have detected that you are using devise_for inside engine routes. ' \
+            'In this case, you probably want to set Devise.router_name = MOUNT_POINT, where '   \
+            'MOUNT_POINT is a symbol representing where this engine will be mounted at. For '   \
+            'now Devise will default the mount point to :main_app. You can explicitly set it'   \
+            ' to :main_app as well in case you want to keep the current behavior.'
         end
 
         Devise.configure_warden!
@@ -246,11 +246,13 @@ module ActionDispatch::Routing
           raise_no_devise_method_error!(mapping.class_name) unless mapping.to.respond_to?(:devise)
         rescue NameError => e
           raise unless mapping.class_name == resource.to_s.classify
+
           warn "[WARNING] You provided devise_for #{resource.inspect} but there is " \
             "no model #{mapping.class_name} defined in your application"
           next
         rescue NoMethodError => e
           raise unless e.message.include?("undefined method `devise'")
+
           raise_no_devise_method_error!(mapping.class_name)
         end
 
@@ -287,7 +289,7 @@ module ActionDispatch::Routing
     #     root to: "admin/dashboard#show", as: :user_root
     #   end
     #
-    def authenticate(scope=nil, block=nil)
+    def authenticate(scope = nil, block = nil)
       constraints_for(:authenticate!, scope, block) do
         yield
       end
@@ -311,7 +313,7 @@ module ActionDispatch::Routing
     #
     #   root to: 'landing#show'
     #
-    def authenticated(scope=nil, block=nil)
+    def authenticated(scope = nil, block = nil)
       constraints_for(:authenticate?, scope, block) do
         yield
       end
@@ -328,9 +330,9 @@ module ActionDispatch::Routing
     #
     #   root to: 'dashboard#show'
     #
-    def unauthenticated(scope=nil)
+    def unauthenticated(scope = nil)
       constraint = lambda do |request|
-        not request.env["warden"].authenticate? scope: scope
+        !request.env['warden'].authenticate? scope: scope
       end
 
       constraints(constraint) do
@@ -362,7 +364,7 @@ module ActionDispatch::Routing
     # Notice and be aware of the differences above between :user and :users
     def devise_scope(scope)
       constraint = lambda do |request|
-        request.env["devise.mapping"] = Devise.mappings[scope]
+        request.env['devise.mapping'] = Devise.mappings[scope]
         true
       end
 
@@ -370,146 +372,147 @@ module ActionDispatch::Routing
         yield
       end
     end
-    alias :as :devise_scope
+    alias as devise_scope
 
     protected
 
-      def devise_session(mapping, controllers) #:nodoc:
-        resource :session, only: [], controller: controllers[:sessions], path: "" do
-          get   :new,     path: mapping.path_names[:sign_in],  as: "new"
-          post  :create,  path: mapping.path_names[:sign_in]
-          match :destroy, path: mapping.path_names[:sign_out], as: "destroy", via: mapping.sign_out_via
-        end
+    def devise_session(mapping, controllers) #:nodoc:
+      resource :session, only: [], controller: controllers[:sessions], path: '' do
+        get   :new,     path: mapping.path_names[:sign_in], as: 'new'
+        post  :create,  path: mapping.path_names[:sign_in]
+        match :destroy, path: mapping.path_names[:sign_out], as: 'destroy', via: mapping.sign_out_via
       end
-
-      def devise_password(mapping, controllers) #:nodoc:
-        resource :password, only: [:new, :create, :edit, :update],
-          path: mapping.path_names[:password], controller: controllers[:passwords]
-      end
-
-      def devise_confirmation(mapping, controllers) #:nodoc:
-        resource :confirmation, only: [:new, :create, :show],
-          path: mapping.path_names[:confirmation], controller: controllers[:confirmations]
-      end
-
-      def devise_unlock(mapping, controllers) #:nodoc:
-        if mapping.to.unlock_strategy_enabled?(:email)
-          resource :unlock, only: [:new, :create, :show],
-            path: mapping.path_names[:unlock], controller: controllers[:unlocks]
-        end
-      end
-
-      def devise_registration(mapping, controllers) #:nodoc:
-        path_names = {
-          new: mapping.path_names[:sign_up],
-          edit: mapping.path_names[:edit],
-          cancel: mapping.path_names[:cancel]
-        }
-
-        options = {
-          only: [:new, :create, :edit, :update, :destroy],
-          path: mapping.path_names[:registration],
-          path_names: path_names,
-          controller: controllers[:registrations]
-        }
-
-        resource :registration, options do
-          get :cancel
-        end
-      end
-
-      def devise_omniauth_callback(mapping, controllers) #:nodoc:
-        if mapping.fullpath =~ /:[a-zA-Z_]/
-          raise <<-ERROR
-Devise does not support scoping OmniAuth callbacks under a dynamic segment
-and you have set #{mapping.fullpath.inspect}. You can work around by passing
-`skip: :omniauth_callbacks` to the `devise_for` call and extract omniauth
-options to another `devise_for` call outside the scope. Here is an example:
-
-    devise_for :users, only: :omniauth_callbacks, controllers: {omniauth_callbacks: 'users/omniauth_callbacks'}
-
-    scope '/(:locale)', locale: /ru|en/ do
-      devise_for :users, skip: :omniauth_callbacks
     end
-ERROR
-        end
-        current_scope = @scope.dup
-        if @scope.respond_to? :new
-          @scope = @scope.new path: nil
-        else
-          @scope[:path] = nil
-        end
-        path_prefix = Devise.omniauth_path_prefix || "/#{mapping.fullpath}/auth".squeeze("/")
 
-        set_omniauth_path_prefix!(path_prefix)
+    def devise_password(mapping, controllers) #:nodoc:
+      resource :password, only: %i[new create edit update],
+                          path: mapping.path_names[:password], controller: controllers[:passwords]
+    end
 
-        mapping.to.omniauth_providers.each do |provider|
-          match "#{path_prefix}/#{provider}",
-            to: "#{controllers[:omniauth_callbacks]}#passthru",
-            as: "#{provider}_omniauth_authorize",
-            via: [:get, :post]
+    def devise_confirmation(mapping, controllers) #:nodoc:
+      resource :confirmation, only: %i[new create show],
+                              path: mapping.path_names[:confirmation], controller: controllers[:confirmations]
+    end
 
-          match "#{path_prefix}/#{provider}/callback",
-            to: "#{controllers[:omniauth_callbacks]}##{provider}",
-            as: "#{provider}_omniauth_callback",
-            via: [:get, :post]
-        end
-      ensure
-        @scope = current_scope
+    def devise_unlock(mapping, controllers) #:nodoc:
+      if mapping.to.unlock_strategy_enabled?(:email)
+        resource :unlock, only: %i[new create show],
+                          path: mapping.path_names[:unlock], controller: controllers[:unlocks]
+      end
+    end
+
+    def devise_registration(mapping, controllers) #:nodoc:
+      path_names = {
+        new: mapping.path_names[:sign_up],
+        edit: mapping.path_names[:edit],
+        cancel: mapping.path_names[:cancel]
+      }
+
+      options = {
+        only: %i[new create edit update destroy],
+        path: mapping.path_names[:registration],
+        path_names: path_names,
+        controller: controllers[:registrations]
+      }
+
+      resource :registration, options do
+        get :cancel
+      end
+    end
+
+    def devise_omniauth_callback(mapping, controllers) #:nodoc:
+      if /:[a-zA-Z_]/.match?(mapping.fullpath)
+        raise <<~ERROR
+          Devise does not support scoping OmniAuth callbacks under a dynamic segment
+          and you have set #{mapping.fullpath.inspect}. You can work around by passing
+          `skip: :omniauth_callbacks` to the `devise_for` call and extract omniauth
+          options to another `devise_for` call outside the scope. Here is an example:
+
+              devise_for :users, only: :omniauth_callbacks, controllers: {omniauth_callbacks: 'users/omniauth_callbacks'}
+
+              scope '/(:locale)', locale: /ru|en/ do
+                devise_for :users, skip: :omniauth_callbacks
+              end
+        ERROR
       end
 
-      def with_devise_exclusive_scope(new_path, new_as, options) #:nodoc:
-        current_scope = @scope.dup
+      current_scope = @scope.dup
+      if @scope.respond_to? :new
+        @scope = @scope.new path: nil
+      else
+        @scope[:path] = nil
+      end
+      path_prefix = Devise.omniauth_path_prefix || "/#{mapping.fullpath}/auth".squeeze('/')
 
-        exclusive = { as: new_as, path: new_path, module: nil }
-        exclusive.merge!(options.slice(:constraints, :defaults, :options))
+      set_omniauth_path_prefix!(path_prefix)
 
-        if @scope.respond_to? :new
-          @scope = @scope.new exclusive
-        else
-          exclusive.each_pair { |key, value| @scope[key] = value }
-        end
+      mapping.to.omniauth_providers.each do |provider|
+        match "#{path_prefix}/#{provider}",
+              to: "#{controllers[:omniauth_callbacks]}#passthru",
+              as: "#{provider}_omniauth_authorize",
+              via: %i[get post]
+
+        match "#{path_prefix}/#{provider}/callback",
+              to: "#{controllers[:omniauth_callbacks]}##{provider}",
+              as: "#{provider}_omniauth_callback",
+              via: %i[get post]
+      end
+    ensure
+      @scope = current_scope
+    end
+
+    def with_devise_exclusive_scope(new_path, new_as, options) #:nodoc:
+      current_scope = @scope.dup
+
+      exclusive = { as: new_as, path: new_path, module: nil }
+      exclusive.merge!(options.slice(:constraints, :defaults, :options))
+
+      if @scope.respond_to? :new
+        @scope = @scope.new exclusive
+      else
+        exclusive.each_pair { |key, value| @scope[key] = value }
+      end
+      yield
+    ensure
+      @scope = current_scope
+    end
+
+    def constraints_for(method_to_apply, scope = nil, block = nil)
+      constraint = lambda do |request|
+        request.env['warden'].send(method_to_apply, scope: scope) &&
+          (block.nil? || block.call(request.env['warden'].user(scope)))
+      end
+
+      constraints(constraint) do
         yield
-      ensure
-        @scope = current_scope
       end
+    end
 
-      def constraints_for(method_to_apply, scope=nil, block=nil)
-        constraint = lambda do |request|
-          request.env['warden'].send(method_to_apply, scope: scope) &&
-            (block.nil? || block.call(request.env["warden"].user(scope)))
-        end
-
-        constraints(constraint) do
-          yield
-        end
+    def set_omniauth_path_prefix!(path_prefix) #:nodoc:
+      if ::OmniAuth.config.path_prefix && ::OmniAuth.config.path_prefix != path_prefix
+        raise "Wrong OmniAuth configuration. If you are getting this exception, it means that either:\n\n" \
+          "1) You are manually setting OmniAuth.config.path_prefix and it doesn't match the Devise one\n" \
+          "2) You are setting :omniauthable in more than one model\n" \
+          "3) You changed your Devise routes/OmniAuth setting and haven't restarted your server"
+      else
+        ::OmniAuth.config.path_prefix = path_prefix
       end
+    end
 
-      def set_omniauth_path_prefix!(path_prefix) #:nodoc:
-        if ::OmniAuth.config.path_prefix && ::OmniAuth.config.path_prefix != path_prefix
-          raise "Wrong OmniAuth configuration. If you are getting this exception, it means that either:\n\n" \
-            "1) You are manually setting OmniAuth.config.path_prefix and it doesn't match the Devise one\n" \
-            "2) You are setting :omniauthable in more than one model\n" \
-            "3) You changed your Devise routes/OmniAuth setting and haven't restarted your server"
-        else
-          ::OmniAuth.config.path_prefix = path_prefix
-        end
-      end
+    def raise_no_secret_key #:nodoc:
+      raise <<~ERROR
+        Devise.secret_key was not set. Please add the following to your Devise initializer:
 
-      def raise_no_secret_key #:nodoc:
-        raise <<-ERROR
-Devise.secret_key was not set. Please add the following to your Devise initializer:
+          config.secret_key = '#{SecureRandom.hex(64)}'
 
-  config.secret_key = '#{SecureRandom.hex(64)}'
+        Please ensure you restarted your application after installing Devise or setting the key.
+      ERROR
+    end
 
-Please ensure you restarted your application after installing Devise or setting the key.
-ERROR
-      end
-
-      def raise_no_devise_method_error!(klass) #:nodoc:
-        raise "#{klass} does not respond to 'devise' method. This usually means you haven't " \
-          "loaded your ORM file or it's being loaded too late. To fix it, be sure to require 'devise/orm/YOUR_ORM' " \
-          "inside 'config/initializers/devise.rb' or before your application definition in 'config/application.rb'"
-      end
+    def raise_no_devise_method_error!(klass) #:nodoc:
+      raise "#{klass} does not respond to 'devise' method. This usually means you haven't " \
+        "loaded your ORM file or it's being loaded too late. To fix it, be sure to require 'devise/orm/YOUR_ORM' " \
+        "inside 'config/initializers/devise.rb' or before your application definition in 'config/application.rb'"
+    end
   end
 end

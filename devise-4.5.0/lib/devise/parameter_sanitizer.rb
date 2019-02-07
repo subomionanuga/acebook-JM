@@ -36,10 +36,10 @@ module Devise
   #    end
   class ParameterSanitizer
     DEFAULT_PERMITTED_ATTRIBUTES = {
-      sign_in: [:password, :remember_me],
-      sign_up: [:password, :password_confirmation],
-      account_update: [:password, :password_confirmation, :current_password]
-    }
+      sign_in: %i[password remember_me],
+      sign_up: %i[password password_confirmation],
+      account_update: %i[password password_confirmation current_password]
+    }.freeze
 
     def initialize(resource_class, resource_name, params)
       @auth_keys      = extract_auth_keys(resource_class)
@@ -108,9 +108,7 @@ module Devise
     #
     # Returns nothing.
     def permit(action, keys: nil, except: nil, &block)
-      if block_given?
-        @permitted[action] = block
-      end
+      @permitted[action] = block if block_given?
 
       if keys.present?
         @permitted[action] ||= @auth_keys.dup
@@ -131,7 +129,7 @@ module Devise
     # Returns an +ActiveSupport::HashWithIndifferentAccess+.
     def cast_to_hash(params)
       # TODO: Remove the `with_indifferent_access` method call when we only support Rails 5+.
-      params && params.to_h.with_indifferent_access
+      params&.to_h&.with_indifferent_access
     end
 
     def default_params
