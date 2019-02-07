@@ -40,7 +40,7 @@ describe 'Authentication' do
 end
 
 describe 'User' do
-  scenario 'can visit other users pages' do
+  scenario 'can visit other users pages via address bar' do
     go_homepage
     sign_up
     click_on 'Sign out'
@@ -50,6 +50,18 @@ describe 'User' do
     fill_in 'user[password_confirmation]', with: 'secondpassword'
     click_button 'Sign up'
     visit '/user/4'
+    expect(page).to have_content("you are viewing test@test.com's page")
+  end
+  scenario 'can visit other users pages via links on profile' do
+    go_homepage
+    sign_up
+    click_on 'Sign out'
+    click_link 'Sign up'
+    fill_in 'user[email]', with: 'second@test.com'
+    fill_in 'user[password]', with: 'secondpassword'
+    fill_in 'user[password_confirmation]', with: 'secondpassword'
+    click_button 'Sign up'
+    click_link 'test@test.com'
     expect(page).to have_content("you are viewing test@test.com's page")
   end
 end
