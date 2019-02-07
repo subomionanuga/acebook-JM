@@ -46,3 +46,10 @@ def create_post
   fill_in 'Message', with: 'Hello, world!'
   click_button 'Submit'
 end
+
+def create_second_post
+  visit '/posts'
+  click_link 'New post'
+  fill_in 'Message', with: 'My second post, MOO!'
+  click_button 'Submit'
+end
