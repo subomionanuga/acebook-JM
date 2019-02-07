@@ -49,7 +49,7 @@ describe 'User' do
     fill_in 'user[password]', with: 'secondpassword'
     fill_in 'user[password_confirmation]', with: 'secondpassword'
     click_button 'Sign up'
-    visit '/user/3'
+    visit '/user/5'
     expect(page).to have_content("you are viewing test@test.com's page")
   end
 

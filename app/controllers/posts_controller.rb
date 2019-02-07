@@ -7,7 +7,12 @@ class PostsController < ApplicationController
   before_action :find_post, only: %i[edit show update destroy]
   before_action :all_posts, only: %i[index destroy]
 
-  def index; end
+  def index
+    # @posts = Post.all
+    # @post = Post.find(params[:post_id])
+
+    # @user = User.find(@post)
+  end
 
   def new
     @post = Post.new
@@ -52,7 +57,13 @@ class PostsController < ApplicationController
 
   def all_posts
     @posts = Post.all
+    @users = User.all
   end
+
+  def find_user
+    @user = User.find(params[:id])
+  end
+
 
   def find_post
     @post = Post.find(params[:id])
