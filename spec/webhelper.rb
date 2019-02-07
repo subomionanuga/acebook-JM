@@ -35,7 +35,6 @@ def sign_up_short_password
   click_button 'Sign up'
 end
 
-
 def help_pp
   pp page.body
 end
@@ -44,5 +43,12 @@ def create_post
   visit "/posts"
   click_link "New post"
   fill_in "Message", with: "Hello, world!"
+  click_button "Submit"
+end
+
+def create_post_new_line
+  visit "/posts"
+  click_link "New post"
+  fill_in "Message", with: "Goodbye Universe"
   click_button "Submit"
 end

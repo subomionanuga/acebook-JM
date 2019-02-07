@@ -40,4 +40,13 @@ feature "Timeline", type: :feature do
     expect(page).to have_content("You cannot edit that post, you snake!")
     expect(page).to have_no_content("Trying to steal someone else's post!")
   end
+
+  scenario "User can make post with new line" do
+    go_homepage
+    sign_up
+    create_post_new_line
+    save_and_open_page
+    pp page.text
+    expect(page.text).to have_content("Goodbye\n Universe")#.to_be(true)
+  end
 end

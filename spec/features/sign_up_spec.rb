@@ -46,8 +46,8 @@ describe "User" do
     fill_in "user[email]", with: "second@test.com"
     fill_in "user[password]", with: "secondpassword"
     fill_in "user[password_confirmation]", with: "secondpassword"
-    click_button 'Sign up'  
-    save_and_open_page
+    click_button 'Sign up'
+    # save_and_open_page
     visit '/user/2'
     expect(page).to have_content("you are viewing test@test.com's page")
   end
