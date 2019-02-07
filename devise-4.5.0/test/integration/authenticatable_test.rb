@@ -136,8 +136,8 @@ class AuthenticationSanityTest < Devise::IntegrationTest
   end
 
   test 'scope uses custom failure app' do
-    put "/en/accounts/management"
-    assert_equal "Oops, not found", response.body
+    put '/en/accounts/management'
+    assert_equal 'Oops, not found', response.body
     assert_equal 404, response.status
   end
 end
@@ -175,7 +175,7 @@ class AuthenticationRoutesRestrictions < Devise::IntegrationTest
     refute warden.authenticated?(:user)
 
     assert_raises ActionController::RoutingError do
-      get "/private/active"
+      get '/private/active'
     end
   end
 
@@ -227,7 +227,7 @@ class AuthenticationRoutesRestrictions < Devise::IntegrationTest
     refute warden.authenticated?(:user)
 
     assert_raises ActionController::RoutingError do
-      get "/dashboard/active"
+      get '/dashboard/active'
     end
   end
 
@@ -276,52 +276,52 @@ class AuthenticationRedirectTest < Devise::IntegrationTest
   test 'redirect to default url if no other was configured' do
     sign_in_as_user
     assert_template 'home/index'
-    assert_nil session[:"user_return_to"]
+    assert_nil session[:user_return_to]
   end
 
   test 'redirect to requested url after sign in' do
     get users_path
     assert_redirected_to new_user_session_path
-    assert_equal users_path, session[:"user_return_to"]
+    assert_equal users_path, session[:user_return_to]
 
     follow_redirect!
     sign_in_as_user visit: false
 
     assert_current_url '/users'
-    assert_nil session[:"user_return_to"]
+    assert_nil session[:user_return_to]
   end
 
   test 'redirect to last requested url overwriting the stored return_to option' do
     get expire_user_path(create_user)
     assert_redirected_to new_user_session_path
-    assert_equal expire_user_path(create_user), session[:"user_return_to"]
+    assert_equal expire_user_path(create_user), session[:user_return_to]
 
     get users_path
     assert_redirected_to new_user_session_path
-    assert_equal users_path, session[:"user_return_to"]
+    assert_equal users_path, session[:user_return_to]
 
     follow_redirect!
     sign_in_as_user visit: false
 
     assert_current_url '/users'
-    assert_nil session[:"user_return_to"]
+    assert_nil session[:user_return_to]
   end
 
   test 'xml http requests does not store urls for redirect' do
     get users_path, headers: { 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest' }
     assert_equal 401, response.status
-    assert_nil session[:"user_return_to"]
+    assert_nil session[:user_return_to]
   end
 
   test 'redirect to configured home path for a given scope after sign in' do
     sign_in_as_admin
-    assert_equal "/admin_area/home", @request.path
+    assert_equal '/admin_area/home', @request.path
   end
 
   test 'require_no_authentication should set the already_authenticated flash message' do
     sign_in_as_user
     visit new_user_session_path
-    assert_equal flash[:alert], I18n.t("devise.failure.already_authenticated")
+    assert_equal flash[:alert], I18n.t('devise.failure.already_authenticated')
   end
 end
 
@@ -352,18 +352,18 @@ class AuthenticationSessionTest < Devise::IntegrationTest
   test 'allows session to be set for a given scope' do
     sign_in_as_user
     get '/users'
-    assert_equal "Cart", @controller.user_session[:cart]
+    assert_equal 'Cart', @controller.user_session[:cart]
   end
 
   test 'session id is changed on sign in' do
     get '/users'
-    session_id = request.session["session_id"]
+    session_id = request.session['session_id']
 
     get '/users'
-    assert_equal session_id, request.session["session_id"]
+    assert_equal session_id, request.session['session_id']
 
     sign_in_as_user
-    assert_not_equal session_id, request.session["session_id"]
+    assert_not_equal session_id, request.session['session_id']
   end
 end
 
@@ -373,22 +373,20 @@ class AuthenticationWithScopedViewsTest < Devise::IntegrationTest
       assert_raise Webrat::NotFoundError do
         sign_in_as_user
       end
-      assert_match %r{Special user view}, response.body
+      assert_match /Special user view/, response.body
     end
   end
 
   test 'renders the scoped view if turned on in a specific controller' do
-    begin
-      Devise::SessionsController.scoped_views = true
-      assert_raise Webrat::NotFoundError do
-        sign_in_as_user
-      end
-
-      assert_match %r{Special user view}, response.body
-      assert !Devise::PasswordsController.scoped_views?
-    ensure
-      Devise::SessionsController.send :remove_instance_variable, :@scoped_views
+    Devise::SessionsController.scoped_views = true
+    assert_raise Webrat::NotFoundError do
+      sign_in_as_user
     end
+
+    assert_match /Special user view/, response.body
+    assert !Devise::PasswordsController.scoped_views?
+  ensure
+    Devise::SessionsController.send :remove_instance_variable, :@scoped_views
   end
 
   test 'does not render the scoped view if turned off' do
@@ -419,7 +417,7 @@ class AuthenticationOthersTest < Devise::IntegrationTest
 
       post exhibit_user_url(1)
       refute warden.authenticated?(:user)
-      assert_equal "User is not authenticated", response.body
+      assert_equal 'User is not authenticated', response.body
     end
   end
 
@@ -449,8 +447,8 @@ class AuthenticationOthersTest < Devise::IntegrationTest
 
   test 'sign in with script name' do
     assert_nothing_raised do
-      get new_user_session_path, headers: { "SCRIPT_NAME" => "/omg" }
-      fill_in "email", with: "user@test.com"
+      get new_user_session_path, headers: { 'SCRIPT_NAME' => '/omg' }
+      fill_in 'email', with: 'user@test.com'
     end
   end
 
@@ -479,14 +477,14 @@ class AuthenticationOthersTest < Devise::IntegrationTest
   end
 
   test 'uses the mapping from router' do
-    sign_in_as_user visit: "/as/sign_in"
+    sign_in_as_user visit: '/as/sign_in'
     assert warden.authenticated?(:user)
     refute warden.authenticated?(:admin)
   end
 
   test 'sign in with xml format returns xml response' do
     create_user
-    post user_session_path(format: 'xml'), params: { user: {email: "user@test.com", password: '12345678'} }
+    post user_session_path(format: 'xml'), params: { user: { email: 'user@test.com', password: '12345678' } }
     assert_response :success
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
   end
@@ -496,13 +494,13 @@ class AuthenticationOthersTest < Devise::IntegrationTest
     assert_response :success
 
     create_user
-    post user_session_path(format: 'xml'), params: { user: {email: "user@test.com", password: '12345678'} }
+    post user_session_path(format: 'xml'), params: { user: { email: 'user@test.com', password: '12345678' } }
     assert_response :success
 
     get new_user_session_path(format: 'xml')
     assert_response :success
 
-    post user_session_path(format: 'xml'), params: { user: {email: "user@test.com", password: '12345678'} }
+    post user_session_path(format: 'xml'), params: { user: { email: 'user@test.com', password: '12345678' } }
     assert_response :success
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
   end
@@ -536,7 +534,7 @@ class AuthenticationOthersTest < Devise::IntegrationTest
   test 'sign out with non-navigational format via XHR does not redirect' do
     swap Devise, navigational_formats: ['*/*', :html] do
       sign_in_as_admin
-      get destroy_sign_out_via_get_session_path, xhr: true, headers: { "HTTP_ACCEPT" => "application/json,text/javascript,*/*" } # NOTE: Bug is triggered by combination of XHR and */*.
+      get destroy_sign_out_via_get_session_path, xhr: true, headers: { 'HTTP_ACCEPT' => 'application/json,text/javascript,*/*' } # NOTE: Bug is triggered by combination of XHR and */*.
       assert_response :no_content
       refute warden.authenticated?(:user)
     end
@@ -546,7 +544,7 @@ class AuthenticationOthersTest < Devise::IntegrationTest
   test 'sign out with navigational format via XHR does redirect' do
     swap Devise, navigational_formats: ['*/*', :html] do
       sign_in_as_user
-      delete destroy_user_session_path, xhr: true, headers: { "HTTP_ACCEPT" => "text/html,*/*" }
+      delete destroy_user_session_path, xhr: true, headers: { 'HTTP_ACCEPT' => 'text/html,*/*' }
       assert_response :redirect
       refute warden.authenticated?(:user)
     end
@@ -557,7 +555,7 @@ class AuthenticationKeysTest < Devise::IntegrationTest
   test 'missing authentication keys cause authentication to abort' do
     swap Devise, authentication_keys: [:subdomain] do
       sign_in_as_user
-      assert_contain "Invalid Subdomain or password."
+      assert_contain 'Invalid Subdomain or password.'
       refute warden.authenticated?(:user)
     end
   end
@@ -596,7 +594,7 @@ class AuthenticationRequestKeysTest < Devise::IntegrationTest
 
     swap Devise, request_keys: [:subdomain] do
       sign_in_as_user
-      assert_contain "Invalid Email or password."
+      assert_contain 'Invalid Email or password.'
       refute warden.authenticated?(:user)
     end
   end

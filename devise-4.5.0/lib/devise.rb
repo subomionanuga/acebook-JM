@@ -49,17 +49,17 @@ module Devise
 
   # Constants which holds devise configuration for extensions. Those should
   # not be modified by the "end user" (this is why they are constants).
-  ALL         = []
-  CONTROLLERS = {}
-  ROUTES      = {}
-  STRATEGIES  = {}
-  URL_HELPERS = {}
+  ALL         = [].freeze
+  CONTROLLERS = {}.freeze
+  ROUTES      = {}.freeze
+  STRATEGIES  = {}.freeze
+  URL_HELPERS = {}.freeze
 
   # Strategies that do not require user input.
-  NO_INPUT = []
+  NO_INPUT = [].freeze
 
   # True values used to check params
-  TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
+  TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'].freeze
 
   # Secret key used by the key generator
   mattr_accessor :secret_key
@@ -107,7 +107,7 @@ module Devise
 
   # The realm used in Http Basic Authentication.
   mattr_accessor :http_authentication_realm
-  @@http_authentication_realm = "Application"
+  @@http_authentication_realm = 'Application'
 
   # Email regex used to validate email formats. It asserts that there are no
   # @ symbols or whitespaces in either the localpart or the domain, and that
@@ -217,7 +217,7 @@ module Devise
 
   # Which formats should be treated as navigational.
   mattr_accessor :navigational_formats
-  @@navigational_formats = ["*/*", :html]
+  @@navigational_formats = ['*/*', :html]
 
   # When set to true, signing out a user signs out all other scopes.
   mattr_accessor :sign_out_all_scopes
@@ -231,13 +231,13 @@ module Devise
   # Defaults to ApplicationController. This should be set early
   # in the initialization process and should be set to a string.
   mattr_accessor :parent_controller
-  @@parent_controller = "ApplicationController"
+  @@parent_controller = 'ApplicationController'
 
   # The parent mailer all Devise mailers inherit from.
   # Defaults to ActionMailer::Base. This should be set early
   # in the initialization process and should be set to a string.
   mattr_accessor :parent_mailer
-  @@parent_mailer = "ActionMailer::Base"
+  @@parent_mailer = 'ActionMailer::Base'
 
   # The router Devise should use to generate routes. Defaults
   # to :main_app. Should be overridden by engines in order
@@ -294,11 +294,11 @@ module Devise
   @@token_generator = nil
 
   def self.rails51? # :nodoc:
-    Rails.gem_version >= Gem::Version.new("5.1.x")
+    Rails.gem_version >= Gem::Version.new('5.1.x')
   end
 
   def self.activerecord51? # :nodoc:
-    defined?(ActiveRecord) && ActiveRecord.gem_version >= Gem::Version.new("5.1.x")
+    defined?(ActiveRecord) && ActiveRecord.gem_version >= Gem::Version.new('5.1.x')
   end
 
   # Default way to set up Devise. Run rails generate devise_install to create
@@ -339,7 +339,7 @@ module Devise
   def self.mailer=(class_name)
     @@mailer_ref = ref(class_name)
   end
-  self.mailer = "Devise::Mailer"
+  self.mailer = 'Devise::Mailer'
 
   # Small method that adds a mapping to Devise.
   def self.add_mapping(resource, options)
@@ -395,13 +395,16 @@ module Devise
     if route = options[:route]
       case route
       when TrueClass
-        key, value = module_name, []
+        key = module_name
+        value = []
       when Symbol
-        key, value = route, []
+        key = route
+        value = []
       when Hash
-        key, value = route.keys.first, route.values.flatten
+        key = route.keys.first
+        value = route.values.flatten
       else
-        raise ArgumentError, ":route should be true, a Symbol or a Hash"
+        raise ArgumentError, ':route should be true, a Symbol or a Hash'
       end
 
       URL_HELPERS[key] ||= []
@@ -499,6 +502,7 @@ module Devise
   # constant-time comparison algorithm to prevent timing attacks
   def self.secure_compare(a, b)
     return false if a.blank? || b.blank? || a.bytesize != b.bytesize
+
     l = a.unpack "C#{a.bytesize}"
 
     res = 0

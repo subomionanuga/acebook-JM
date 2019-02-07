@@ -1,8 +1,12 @@
 <%= link_to "New post", new_post_path %>
-<% @posts.each do |post| %>
+<% @posts.reverse.each do |post| %>
   <div>
+
   <p> <%= simple_format(post.message) %> - created by <%= post.user.email %> - user <%= post.user_id%> </p>
   <%=post.id%>
+
+  - at <%= post.time_created %>
+
   <% if current_user.id == post.user_id %>
   <%= link_to "Edit Post", edit_post_path(post) %>
   <%= link_to "Delete Post", post, method: :delete, data: {confirm: "Are you sure?"} %>

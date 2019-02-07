@@ -36,8 +36,8 @@ module Devise
         #     before_action ->{ authenticate_blogger! :admin }  # Redirects to the admin login page
         #     current_blogger :user                             # Preferably returns a User if one is signed in
         #
-        def devise_group(group_name, opts={})
-          mappings = "[#{ opts[:contains].map { |m| ":#{m}" }.join(',') }]"
+        def devise_group(group_name, opts = {})
+          mappings = "[#{opts[:contains].map { |m| ":#{m}" }.join(',')}]"
 
           class_eval <<-METHODS, __FILE__, __LINE__ + 1
             def authenticate_#{group_name}!(favourite=nil, opts={})
@@ -140,7 +140,7 @@ module Devise
 
       # The main accessor for the warden proxy instance
       def warden
-        request.env['warden'] or raise MissingWarden
+        request.env['warden'] || raise(MissingWarden)
       end
 
       # Return true if it's a devise_controller. false to all controllers unless
@@ -161,7 +161,7 @@ module Devise
 
       # Tell warden that params authentication is allowed for that specific page.
       def allow_params_authentication!
-        request.env["devise.allow_params_authentication"] = true
+        request.env['devise.allow_params_authentication'] = true
       end
 
       # The scope root url to be used when they're signed in. By default, it first
@@ -181,7 +181,7 @@ module Devise
         elsif respond_to?(:root_path)
           root_path
         else
-          "/"
+          '/'
         end
       end
 
@@ -226,7 +226,7 @@ module Devise
         scope = Devise::Mapping.find_scope!(resource_or_scope)
         router_name = Devise.mappings[scope].router_name
         context = router_name ? send(router_name) : self
-        context.respond_to?(:root_path) ? context.root_path : "/"
+        context.respond_to?(:root_path) ? context.root_path : '/'
       end
 
       # Sign in a user and tries to redirect first to the stored location and
@@ -253,7 +253,7 @@ module Devise
       # clear run strategies and remove cached variables.
       def handle_unverified_request
         super # call the default behaviour which resets/nullifies/raises
-        request.env["devise.skip_storage"] = true
+        request.env['devise.skip_storage'] = true
         sign_out_all_scopes(false)
       end
 
@@ -274,7 +274,7 @@ module Devise
       private
 
       def expire_data_after_sign_out!
-        Devise.mappings.each { |_,m| instance_variable_set("@current_#{m.name}", nil) }
+        Devise.mappings.each { |_, m| instance_variable_set("@current_#{m.name}", nil) }
         super
       end
     end
@@ -282,11 +282,11 @@ module Devise
 
   class MissingWarden < StandardError
     def initialize
-      super "Devise could not find the `Warden::Proxy` instance on your request environment.\n" + \
-        "Make sure that your application is loading Devise and Warden as expected and that " + \
-        "the `Warden::Manager` middleware is present in your middleware stack.\n" + \
-        "If you are seeing this on one of your tests, ensure that your tests are either " + \
-        "executing the Rails middleware stack or that your tests are using the `Devise::Test::ControllerHelpers` " + \
+      super "Devise could not find the `Warden::Proxy` instance on your request environment.\n" \
+        'Make sure that your application is loading Devise and Warden as expected and that ' \
+        "the `Warden::Manager` middleware is present in your middleware stack.\n" \
+        'If you are seeing this on one of your tests, ensure that your tests are either ' \
+        'executing the Rails middleware stack or that your tests are using the `Devise::Test::ControllerHelpers` ' \
         "module to inject the `request.env['warden']` object for you."
     end
   end

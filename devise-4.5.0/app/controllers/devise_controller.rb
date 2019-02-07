@@ -4,13 +4,11 @@
 class DeviseController < Devise.parent_controller.constantize
   include Devise::Controllers::ScopedViews
 
-  if respond_to?(:helper)
-    helper DeviseHelper
-  end
+  helper DeviseHelper if respond_to?(:helper)
 
   if respond_to?(:helper_method)
-    helpers = %w(resource scope_name resource_name signed_in_resource
-                 resource_class resource_params devise_mapping)
+    helpers = %w[resource scope_name resource_name signed_in_resource
+                 resource_class resource_params devise_mapping]
     helper_method(*helpers)
   end
 
@@ -26,9 +24,9 @@ class DeviseController < Devise.parent_controller.constantize
   # itself. Changing its visibility may break other gems.
   def _prefixes #:nodoc:
     @_prefixes ||= if self.class.scoped_views? && request && devise_mapping
-      ["#{devise_mapping.scoped_path}/#{controller_name}"] + super
-    else
-      super
+                     ["#{devise_mapping.scoped_path}/#{controller_name}"] + super
+                   else
+                     super
     end
   end
 
@@ -43,7 +41,7 @@ class DeviseController < Devise.parent_controller.constantize
   def resource_name
     devise_mapping.name
   end
-  alias :scope_name :resource_name
+  alias scope_name resource_name
 
   # Proxy to devise map class
   def resource_class
@@ -57,27 +55,27 @@ class DeviseController < Devise.parent_controller.constantize
 
   # Attempt to find the mapped route for devise based on request path
   def devise_mapping
-    @devise_mapping ||= request.env["devise.mapping"]
+    @devise_mapping ||= request.env['devise.mapping']
   end
 
   # Checks whether it's a devise mapped resource or not.
   def assert_is_devise_resource! #:nodoc:
-    unknown_action! <<-MESSAGE unless devise_mapping
-Could not find devise mapping for path #{request.fullpath.inspect}.
-This may happen for two reasons:
+    unknown_action! <<~MESSAGE unless devise_mapping
+      Could not find devise mapping for path #{request.fullpath.inspect}.
+      This may happen for two reasons:
 
-1) You forgot to wrap your route inside the scope block. For example:
+      1) You forgot to wrap your route inside the scope block. For example:
 
-  devise_scope :user do
-    get "/some/route" => "some_devise_controller"
-  end
+        devise_scope :user do
+          get "/some/route" => "some_devise_controller"
+        end
 
-2) You are testing a Devise controller bypassing the router.
-   If so, you can explicitly tell Devise which mapping to use:
+      2) You are testing a Devise controller bypassing the router.
+         If so, you can explicitly tell Devise which mapping to use:
 
-   @request.env["devise.mapping"] = Devise.mappings[:user]
+         @request.env["devise.mapping"] = Devise.mappings[:user]
 
-MESSAGE
+    MESSAGE
   end
 
   # Returns real navigational formats which are supported by Rails
@@ -86,7 +84,7 @@ MESSAGE
   end
 
   def unknown_action!(msg)
-    logger.debug "[Devise] #{msg}" if logger
+    logger&.debug "[Devise] #{msg}"
     raise AbstractController::ActionNotFound, msg
   end
 
@@ -102,17 +100,18 @@ MESSAGE
   def require_no_authentication
     assert_is_devise_resource!
     return unless is_navigational_format?
+
     no_input = devise_mapping.no_input_strategies
 
     authenticated = if no_input.present?
-      args = no_input.dup.push scope: resource_name
-      warden.authenticate?(*args)
-    else
-      warden.authenticated?(resource_name)
+                      args = no_input.dup.push scope: resource_name
+                      warden.authenticate?(*args)
+                    else
+                      warden.authenticated?(resource_name)
     end
 
     if authenticated && resource = warden.user(resource_name)
-      flash[:alert] = I18n.t("devise.failure.already_authenticated")
+      flash[:alert] = I18n.t('devise.failure.already_authenticated')
       redirect_to after_sign_in_path_for(resource)
     end
   end
@@ -122,10 +121,10 @@ MESSAGE
   # and instructions were sent.
   def successfully_sent?(resource)
     notice = if Devise.paranoid
-      resource.errors.clear
-      :send_paranoid_instructions
-    elsif resource.errors.empty?
-      :send_instructions
+               resource.errors.clear
+               :send_paranoid_instructions
+             elsif resource.errors.empty?
+               :send_instructions
     end
 
     if notice
@@ -162,9 +161,7 @@ MESSAGE
 
   # Sets flash message if is_flashing_format? equals true
   def set_flash_message!(key, kind, options = {})
-    if is_flashing_format?
-      set_flash_message(key, kind, options)
-    end
+    set_flash_message(key, kind, options) if is_flashing_format?
   end
 
   # Sets minimum password length to show to user

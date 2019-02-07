@@ -3,13 +3,13 @@
 require 'active_support/test_case'
 
 class ActiveSupport::TestCase
-  VALID_AUTHENTICATION_TOKEN = 'AbCdEfGhIjKlMnOpQrSt'.freeze
+  VALID_AUTHENTICATION_TOKEN = 'AbCdEfGhIjKlMnOpQrSt'
 
   def setup_mailer
     ActionMailer::Base.deliveries = []
   end
 
-  def store_translations(locale, translations, &block)
+  def store_translations(locale, translations)
     # Calling 'available_locales' before storing the translations to ensure
     # that the I18n backend will be initialized before we store our custom
     # translations, so they will always override the translations for the
@@ -27,32 +27,32 @@ class ActiveSupport::TestCase
     "test#{@@email_count}@example.com"
   end
 
-  def valid_attributes(attributes={})
-    { username: "usertest",
+  def valid_attributes(attributes = {})
+    { username: 'usertest',
       email: generate_unique_email,
       password: '12345678',
       password_confirmation: '12345678' }.update(attributes)
   end
 
-  def new_user(attributes={})
+  def new_user(attributes = {})
     User.new(valid_attributes(attributes))
   end
 
-  def create_user(attributes={})
+  def create_user(attributes = {})
     User.create!(valid_attributes(attributes))
   end
 
-  def create_admin(attributes={})
+  def create_admin(attributes = {})
     valid_attributes = valid_attributes(attributes)
     valid_attributes.delete(:username)
     Admin.create!(valid_attributes)
   end
 
-  def create_user_without_email(attributes={})
+  def create_user_without_email(attributes = {})
     UserWithoutEmail.create!(valid_attributes(attributes))
   end
 
-  def create_user_with_validations(attributes={})
+  def create_user_with_validations(attributes = {})
     UserWithValidations.create!(valid_attributes(attributes))
   end
 

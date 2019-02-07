@@ -6,7 +6,7 @@ require 'test_models'
 class ActiveRecordTest < ActiveSupport::TestCase
   def include_module?(klass, mod)
     klass.devise_modules.include?(mod) &&
-      klass.included_modules.include?(Devise::Models::const_get(mod.to_s.classify))
+      klass.included_modules.include?(Devise::Models.const_get(mod.to_s.classify))
   end
 
   def assert_include_modules(klass, *modules)
@@ -32,7 +32,7 @@ class ActiveRecordTest < ActiveSupport::TestCase
 
   test 'validations are applied just once' do
     validators = Several.validators_on :password
-    assert_equal 1, validators.select{ |v| v.kind == :length }.length
+    assert_equal 1, validators.select { |v| v.kind == :length }.length
   end
 
   test 'chosen modules are inheritable' do
@@ -40,13 +40,13 @@ class ActiveRecordTest < ActiveSupport::TestCase
   end
 
   test 'order of module inclusion' do
-    correct_module_order   = [:database_authenticatable, :recoverable, :registerable, :confirmable, :lockable, :timeoutable]
-    incorrect_module_order = [:database_authenticatable, :timeoutable, :registerable, :recoverable, :lockable, :confirmable]
+    correct_module_order   = %i[database_authenticatable recoverable registerable confirmable lockable timeoutable]
+    incorrect_module_order = %i[database_authenticatable timeoutable registerable recoverable lockable confirmable]
 
     assert_include_modules Admin, *incorrect_module_order
 
     # get module constants from symbol list
-    module_constants = correct_module_order.collect { |mod| Devise::Models::const_get(mod.to_s.classify) }
+    module_constants = correct_module_order.collect { |mod| Devise::Models.const_get(mod.to_s.classify) }
 
     # confirm that they adhere to the order in ALL
     # get included modules, filter out the noise, and reverse the order
@@ -132,7 +132,7 @@ class CheckFieldsTest < ActiveSupport::TestCase
       attr_accessor :encrypted_password
     end
 
-    assert_raise_with_message Devise::Models::MissingAttribute, "The following attribute(s) is (are) missing on your model: email" do
+    assert_raise_with_message Devise::Models::MissingAttribute, 'The following attribute(s) is (are) missing on your model: email' do
       Devise::Models.check_fields!(Clown)
     end
   end
@@ -148,7 +148,7 @@ class CheckFieldsTest < ActiveSupport::TestCase
       devise :database_authenticatable
     end
 
-    assert_raise_with_message Devise::Models::MissingAttribute, "The following attribute(s) is (are) missing on your model: encrypted_password, email" do
+    assert_raise_with_message Devise::Models::MissingAttribute, 'The following attribute(s) is (are) missing on your model: encrypted_password, email' do
       Devise::Models.check_fields!(Magician)
     end
   end

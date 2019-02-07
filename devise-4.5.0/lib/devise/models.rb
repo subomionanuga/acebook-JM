@@ -8,7 +8,7 @@ module Devise
       end
 
       def message
-        "The following attribute(s) is (are) missing on your model: #{@attributes.join(", ")}"
+        "The following attribute(s) is (are) missing on your model: #{@attributes.join(', ')}"
       end
     end
 
@@ -64,7 +64,7 @@ module Devise
       end
 
       if failed_attributes.any?
-        fail Devise::Models::MissingAttribute.new(failed_attributes)
+        raise Devise::Models::MissingAttribute, failed_attributes
       end
     end
 
@@ -80,7 +80,7 @@ module Devise
       options = modules.extract_options!.dup
 
       selected_modules = modules.map(&:to_sym).uniq.sort_by do |s|
-        Devise::ALL.index(s) || -1  # follow Devise::ALL order
+        Devise::ALL.index(s) || -1 # follow Devise::ALL order
       end
 
       devise_modules_hook! do
@@ -89,14 +89,15 @@ module Devise
         selected_modules.each do |m|
           mod = Devise::Models.const_get(m.to_s.classify)
 
-          if mod.const_defined?("ClassMethods")
-            class_mod = mod.const_get("ClassMethods")
+          if mod.const_defined?('ClassMethods')
+            class_mod = mod.const_get('ClassMethods')
             extend class_mod
 
             if class_mod.respond_to?(:available_configs)
               available_configs = class_mod.available_configs
               available_configs.each do |config|
                 next unless options.key?(config)
+
                 send(:"#{config}=", options.delete(config))
               end
             end
