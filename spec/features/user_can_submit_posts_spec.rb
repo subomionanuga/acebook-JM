@@ -39,7 +39,8 @@ feature 'Users action on posts ', type: :feature do
     click_link 'Sign out'
     sign_up2
     click_link 'Posts'
-    visit '/posts/7/edit'
+    save_and_open_page
+    visit '/posts/6/edit'
     fill_in 'Message', with: "Trying to steal someone else's post!"
     click_button 'Submit'
     expect(page).to have_content('You cannot edit that post, you snake!')
