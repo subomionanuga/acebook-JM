@@ -39,7 +39,6 @@ feature 'Users action on posts ', type: :feature do
     click_link 'Sign out'
     sign_up2
     click_link 'Posts'
-    save_and_open_page
     visit '/posts/5/edit'
     fill_in 'Message', with: "Trying to steal someone else's post!"
     click_button 'Submit'
