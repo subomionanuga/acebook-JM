@@ -52,6 +52,7 @@ describe 'User' do
     visit '/user/5'
     expect(page).to have_content("you are viewing test@test.com's page")
   end
+
   scenario 'can visit other users pages via links on profile' do
     go_homepage
     sign_up
