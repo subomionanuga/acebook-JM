@@ -1,37 +1,55 @@
 /*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
- * vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
- *= require_tree .
- *= require_self
- */
+* This is a manifest file that'll be compiled into application.css, which will include all the files
+* listed below.
+*
+* Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+* vendor/assets/stylesheets directory can be referenced here using a relative path.
+*
+* You're free to add application-wide styles to this file and they'll appear at the bottom of the
+* compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+* files in this directory. Styles in this file should be added after the last require_* statement.
+* It is generally better to create a new file per style scope.
+*
+*= require_tree .
+*= require_self
+*/
 html {
-  align-items: center;
+  margin: 0;
+  /* align-items: center;
   align-self: center;
-  align-content: center;
+  align-content: center; */
   text-align: center;
-  background: url(cow_pattern.gif) no-repeat center center fixed ;
+  background: url(cow_pattern.gif) repeat center center fixed ;
 }
+
+.logo{
+  overflow: hidden;
+  position: block;
+  padding: 20px;
+  text-align: center;
+  background-color: white;
+  margin: 1%;
+  padding: 1%;
+  border: 1%;
+  width: 20%;
+  position: sticky;
+  display: inline;
+  float: left;
+  border-radius: 25%;
+}
+
 .homenav {
   overflow: hidden;
 }
 
 /* Style the links inside the navigation bar */
 .homenav a {
-  float: left;
+  float: right;
   color: #f2f2f2;
   text-align: left;
   padding: 10px 10px;
   text-decoration: none;
-  font-size: 17p  x;
+  font-size: 17px;
 }
 
 /* Change the color of links on hover */
@@ -52,12 +70,52 @@ html {
   text-align: left;
   padding: 10px 10px;
   text-decoration: none;
-  font-size: 17p  x;
+  font-size: 17px;
   background-color: black;
   color: white;
+  display: inline;
+  border-radius: 25%;
+}
+
+textarea {
+  resize: none;
+  width: 100%;
+}
+
+a:link, a:visited {
+  color: grey;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a:hover, a:active {
+  background-color: pink ;
+}
+
+#post_contents{
+  background-color: #FFB6C1;
+  border-color: black;
+  border: 1%;
+  border-style: solid;
+  border-radius: 15%;
 }
 
 .mainbody {
-  position: center;
-  background-color: white;
+  overflow: hidden;
+  margin: 1%;
+  padding: 1%;
+  background-color: pink;
+  min-width: 50%;
+  max-width: 50%;
+  border-radius: 25%;
+}
+
+.notice{
+  visibility: hidden;
+  margin: 1%;
+  padding: 1%;
+  border: 1px;
+  background-color: pink;
 }
