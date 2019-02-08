@@ -52,6 +52,6 @@ feature "New Line on Post" do
     go_homepage
     sign_up
     create_post_new_line
-    expect(page.html).to have_content("Goodbye \n Universe")#.to_be(true)
+    expect(page.html).to have_content("Goodbye \n Universe")
   end
 end

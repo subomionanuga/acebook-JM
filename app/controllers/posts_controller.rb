@@ -20,11 +20,9 @@ class PostsController < ApplicationController
 
   def create
     @post = current_user.posts.build(post_params)
-    if @post.save
-      redirect_to @post, notice: 'Yessss, it was posted!'
+    redirect_to @post, notice: 'Yessss, it was posted!' if @post.save
       # else
       # render "new"
-    end
   end
 
   def edit
