@@ -19,3 +19,28 @@ html {
   align-content: center;
   text-align: center;
 }
+.topnav {
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: left;
+  padding: 10px 10px;
+  text-decoration: none;
+  font-size: 17p  x;
+}
+
+/* Change the color of links on hover */
+.topnav a.Sign_up {
+  background-color: rgb(0, 0, 0);
+  color: white;
+}
+
+/* Add a color to the active/current link */
+.topnav a.Sign_in {
+  background-color: rgb(0, 6, 1);
+  color: white;
+}
