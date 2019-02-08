@@ -38,7 +38,6 @@ group :test do
   gem 'capybara', '~> 2.13'
   gem 'database_cleaner'
   gem 'orderly'
-  gem 'pry'
   gem 'selenium-webdriver'
   gem 'simplecov', require: false
   gem 'simplecov-console', require: false
