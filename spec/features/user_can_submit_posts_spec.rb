@@ -45,7 +45,9 @@ feature 'Users action on posts ', type: :feature do
     expect(page).to have_content('You cannot edit that post, you snake!')
     expect(page).to have_no_content("Trying to steal someone else's post!")
   end
+end
 
+feature "New Line on Post" do
   scenario "User can make post with new line" do
     go_homepage
     sign_up

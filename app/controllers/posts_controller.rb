@@ -27,7 +27,8 @@ class PostsController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+  end
 
   def update
     if current_user.id == @post.user_id
@@ -63,7 +64,6 @@ class PostsController < ApplicationController
   def find_user
     @user = User.find(params[:id])
   end
-
 
   def find_post
     @post = Post.find(params[:id])

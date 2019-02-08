@@ -4,6 +4,7 @@ AllCops:
     - 'Gemfile.lock'
     - 'config/**/*'
     - 'bin/**/*'
+    - 'db/schema.rb'
 
 Documentation:
   Enabled: false
