@@ -14,7 +14,7 @@ describe 'sign up', type: :feature do
   scenario 'user can sign up' do
     go_homepage
     sign_up
-    expect(page).to have_content('Currently logged in as test@test.com')
+    expect(page).to have_content('Currently logged in as Moo')
   end
 end
 
@@ -50,7 +50,7 @@ describe 'User' do
     fill_in 'user[password_confirmation]', with: 'secondpassword'
     click_button 'Sign up'
     visit '/user/5'
-    expect(page).to have_content("you are viewing test@test.com's page")
+    expect(page).to have_content("you are viewing Moo's page")
   end
 
   scenario 'can visit other users pages via links on profile' do
@@ -60,9 +60,10 @@ describe 'User' do
     click_link 'Sign up'
     fill_in 'user[email]', with: 'second@test.com'
     fill_in 'user[password]', with: 'secondpassword'
+    fill_in 'user[user_name]', with: 'Moo3'
     fill_in 'user[password_confirmation]', with: 'secondpassword'
     click_button 'Sign up'
-    click_link 'test@test.com'
-    expect(page).to have_content("you are viewing test@test.com's page")
+    click_link 'Moo'
+    expect(page).to have_content("you are viewing Moo's page")
   end
 end

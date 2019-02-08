@@ -3,12 +3,14 @@
   <div>
     <% @posts.reverse.each do |post| %>
 
+
     <p id="post_contents"> <%= post.message %>
       - mooed by <%= @users.find(post.user_id).email %> at <%= post.time_created %>
+
     <div>
       <% if post.comments.each do | comment | %>
         " <%= comment.content %> "
-        | <%= comment.user.email %><br>
+        | <%= comment.user.user_name %><br>
       </p>
       <% end %>
     </div>
