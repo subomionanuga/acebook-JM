@@ -14,7 +14,7 @@
   <p class="notice"><%= notice %></p>
   <p class="alert"><%= alert %></p>
   <div> <% if user_signed_in? %>
-    <p> Currently logged in as <%= current_user.email %> <br>
+    <p> Currently logged in as <%= current_user.user_name %> <br>
       <a href="<%= destroy_user_session_path%>" data-method="delete"> Sign out
       </a>
     </p>

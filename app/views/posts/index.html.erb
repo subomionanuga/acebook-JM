@@ -4,13 +4,13 @@
     <% @posts.reverse.each do |post| %>
     <p> <%= post.message %> </p>
     <p> <%= post.user_id %> </p>
-    <p> - created by <%= @users.find(post.user_id).email %> </p>
+    <p> - created by <%= @users.find(post.user_id).user_name %> </p>
     - at <%= post.time_created %>
     <div>
       <% if post.comments.each do | comment | %>
       <p>
         " <%= comment.content %> "
-        | <%= comment.user.email %><br>
+        | <%= comment.user.user_name %><br>
       </p>
       <% end %>
     </div>

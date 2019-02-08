@@ -17,7 +17,7 @@ feature 'Users and post relationship ', type: :feature do
     go_homepage
     sign_up
     create_post
-    expect(page).to have_content('created by test@test.com')
+    expect(page).to have_content('created by Moo')
   end
 end
 
