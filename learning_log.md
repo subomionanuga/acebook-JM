@@ -205,3 +205,52 @@ Morning Stand-Up
 Afternoon Stand-Up
 
 * No afternoon stand up as 2 person were in a meeting and because of retro at the end of the day
+
+--------------------------------------------
+Thursday 7th of February
+-------------------------
+Planning day (morning)
+
+No morning stand up due to long planning session
+
+Afternoon stand-up
+
+** What we were trying to achieve ?
+* User can add a breaking line in their post : test and code for it
+* Start to make the styling of the app with Sass and Bootstrap
+
+** What did we learn ?
+* That Bootstrap is a front end framework
+* Some behaviour are more difficult to feature test than others.
+* No real new learning point as the morning went well and we applied what we've learned through those 2 weeks.
+
+** Goals of the day ?
+* Carry on on our ticket
+* Style the web app
+
+--------------------------------------------
+Friday 8th of February
+-------------------------
+Retro day (afternoon)
+
+Morning Stand-Up
+
+** What we were trying to achieve ?
+* Styling with CSS
+
+** What did we learn ?
+* That bootstrap and Sass need more than an afternoon to be learned, we decide to build the style in vanilla Css
+* Use of Css - build nav bar
+* Good practise with DB and in which case to ignore it
+* How to navigate better in the file of a rails project
+* How to work better in team and in pair (navigator/driver switch role)
+
+** Goals of the day ?
+* fix Heroku failing deployment
+* Styling in CSS (be careful to check rspec at every stage of css implementation)
+* Retro at the end of the day
+* Organise ourselves for the presentation
+
+Afternoon Stand-Up
+
+* No afternoon stand up planned as we have the presentation of the project at the end of the day which make us move the retro at the time of the afternoon stand-up.
