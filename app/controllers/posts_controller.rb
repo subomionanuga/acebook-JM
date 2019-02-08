@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-
-
 class PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_post, only: %i[edit show update destroy]
