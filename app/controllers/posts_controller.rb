@@ -59,9 +59,9 @@ class PostsController < ApplicationController
     @users = User.all
   end
 
-  def find_user
-    @user = User.find(params[:id])
-  end
+  # def find_user
+  #   @user = User.find(params[:id])
+  # end
 
   def find_post
     @post = Post.find(params[:id])
