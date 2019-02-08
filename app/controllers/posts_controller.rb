@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry'
-
 class PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_post, only: %i[edit show update destroy]
@@ -38,10 +36,7 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    if current_user.id == @post.user_id
-      @post.destroy
-      redirect_to posts_path
-    end
+    redirect_to posts_path if @post.destroy && current_user.id == @post.user_id
   end
 
   def show
