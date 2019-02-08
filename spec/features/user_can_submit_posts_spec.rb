@@ -18,7 +18,7 @@ feature 'Users and post relationship ', type: :feature do
     sign_up
     create_post
 
-    expect(page).to have_content('created by Moo')
+    expect(page).to have_content('mooed by Moo')
 
   end
 end

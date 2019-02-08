@@ -5,7 +5,7 @@
 
 
     <p id="post_contents"> <%= post.message %>
-      - mooed by <%= @users.find(post.user_id).email %> at <%= post.time_created %>
+      - mooed by <%= @users.find(post.user_id).user_name %> at <%= post.time_created %>
 
     <div>
       <% if post.comments.each do | comment | %>
